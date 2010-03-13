@@ -1,4 +1,7 @@
 == Rails && Bing Maps AJAX Control
   
+  $ git clone git://github.com/ilmotta/bing-maps.git
+  $ cd bing-maps/
+  $ cp config/database.sqlite3.yml config/database.yml
   $ rake db:setup
   $ ruby script/server
