@@ -1,0 +1,4 @@
+== Rails && Bing Maps AJAX Control
+  
+  $ rake db:setup
+  $ ruby script/server

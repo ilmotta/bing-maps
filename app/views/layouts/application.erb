@@ -1,0 +1,15 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Navid Map</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.2&mkt=<%= @culture %>"></script>
+    
+    <%= stylesheet_link_tag 'application' %>
+    <%= javascript_include_tag 'jquery', 'jqueryui', 'jquery.hoverintent', 'jquery.cookie', 'map', 'application' %>
+  </head>
+  <body>
+    <%= yield %>
+  </body>
+  <%= yield :script %>
+</html>

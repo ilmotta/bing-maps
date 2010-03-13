@@ -1,0 +1,75 @@
+<table border='0' cellspacing='5' style='width:100%;'>
+  <tr>
+    <td style='width:300px; vertical-align:top;'>
+      <% form_tag users_path, :method => :get do %>
+        <p>
+          <%= label :map, :culture, 'Culture:' %><br />
+          <%= select :map, :culture, User::CULTURES, :selected => @culture %>
+        </p>
+        
+        <%= submit_tag 'Go &raquo;' %>
+      <% end %>
+      
+      <p>
+        <%= label :map, :where, 'Search Location:' %><br />
+        <%= text_field :map, :where, :value => 'Rua Urussanga 240, Porto Alegre/RS', :size => 60 %>
+        <%= link_to 'Search', '#', :id => 'search' %>
+      </p>
+      
+      <h3>Filter by Category</h3>
+      <ul id='categories'>
+        <li><%= link_to 'All Categories', '#', 'data-category_id' => 0 %></li>
+        <% @categories.each do |category| %>
+          <li><%= link_to category.name, '#', 'data-category_id' => category.id %></li>
+        <% end %>
+      </ul>
+    </td>
+    <td>
+      <div id='map' style="position:relative; width:100%; height:400px;"></div>
+    </td>
+  </tr>
+</table>
+
+<% content_for :script do %>
+  <script type="text/javascript">
+    $(function() {
+      $.getJSON('/users', function(users) {
+        Map.load(users);
+      });
+    });
+    
+    $('#search').click(function() {
+      Map.find($('#map_where').val());
+      return false;
+    });
+    
+    $('#categories a').click(function() {
+      // Toggle state
+      $(this).data('active') ? $(this).data('active', false) : $(this).data('active', true);
+      
+      // Disable other categories
+      $('#categories a').not(this).each(function() {
+        $(this).data('active', false);
+      });
+      
+      var categoryID = $(this).attr('data-category_id');
+      var shapeLayer = Map.getShapeLayer();
+      if (categoryID == '0') {
+        Map.showAllShapes();
+      } else { // Filter by the category id
+        for (var i = 0; i < shapeLayer.GetShapeCount(); i++) {
+          var shape = shapeLayer.GetShapeByIndex(i);
+          var shapeCategoryID = $(shape.GetCustomIcon()).attr('data-user-category_id');
+          if ($(this).data('active')) {
+            shapeCategoryID == categoryID ? shape.Show() : shape.Hide();
+          } else {
+            Map.showAllShapes();
+          }
+        }
+      }
+      return false;
+    });
+  </script>
+<% end %>
+
+

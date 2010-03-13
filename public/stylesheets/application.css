@@ -1,0 +1,29 @@
+/* Pushpins */
+.icon-a, .icon-p { width:30px; height:28px; background:url("/images/map-icons.png") no-repeat; }
+.icon-p { background-position:0 -28px; }
+
+/* Styles that apply to the info box's containing element whether it has no beak, a rightBeak, or a leftBeak */
+.customInfoBox-noBeak,
+.customInfoBox-with-rightBeak,
+.customInfoBox-with-leftBeak { position:absolute; }
+
+.customInfoBox-noBeak *,
+.customInfoBox-with-rightBeak *,
+.customInfoBox-with-leftBeak * { padding:0; margin:0; }
+
+/* Offset the body for the drop-shadow and set the body background and border just for starters (developers can change this easily) */
+.customInfoBox-body { -moz-box-shadow:5px 10px 4px rgba(0,0,0,.3); position:relative; top:-5px; left:-5px; padding:10px; border:5px solid #231F20; background-color:#F6F6F1; -moz-border-radius:5px; border-radius:5px; }
+
+/* Apply a nice default drop-shadow after the default Bing Maps info box styles are cleared */
+.customInfoBox-shadow { position:relative; background-color:transparent; }
+
+/* Sections of the info box that a developer could style if desired, but have no style when the default Bing Maps info box styles are cleared */
+.customInfoBox-previewArea,
+.customInfoBox-actionsBackground {}
+
+/* Sections of the info box that should not be visible when the default Bing Maps info box styles are cleared */
+.customInfoBox-actions,
+.customInfoBox-paddingHack { display:none; }
+
+.customInfoBox-beak,
+.customInfoBox-progressAnimation { visibility:hidden; }

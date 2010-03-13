@@ -1,0 +1,12 @@
+log/*.log
+log/*.pid
+db/*.sql
+db/*.sqlite
+db/*.sqlite3
+public/system
+tmp
+.tmp*
+.DS_Store
+.eprj
+config/database.yml
+nbproject

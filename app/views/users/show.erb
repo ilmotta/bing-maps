@@ -1,0 +1,12 @@
+<h3><%= @user.name %> <%= link_to '[&times;]', '#', :class => 'close-info-box' %></h3>
+
+<p>User ID: <%= @user.id %></p>
+<p>Type: <%= @user.role.zero?? 'ADVERTISER' : 'PUBLISHER' %></p>
+<p>Location: (<%= @user.latitude %>, <%= @user.longitude %>)</p>
+
+<script type='text/javascript'>
+  $(function() {
+    // Remove unwanted br tags...
+    $('.customInfoBox-body .firstChild > br').remove();
+  });
+</script>
