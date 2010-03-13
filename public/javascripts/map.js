@@ -139,7 +139,7 @@ var Map = (function() {
   function refreshVisibleMap(event) {
     clearInterval(interval);
     interval = setTimeout(function() {
-      $.getJSON('/users', getCurrentRectangle(), function(users) {
+      $.getJSON('/users.json', getCurrentRectangle(), function(users) {
         addPushpins(users);
       });
     }, 800);

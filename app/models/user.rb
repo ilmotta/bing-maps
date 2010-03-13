@@ -28,7 +28,7 @@ class User < ActiveRecord::Base
 
   named_scope :narrowed_by, lambda { |tl, br|
     {
-      :select => 'id, latitude, longitude, role',
+      :select => 'id, latitude, longitude, role, category_id',
       :conditions => [
         '(latitude <= :top_lat AND latitude >= :bottom_lat) AND (longitude >= :left_long AND longitude <= :right_long)',
         { :top_lat => tl[0].to_f, :bottom_lat => br[0].to_f, :left_long => tl[1].to_f, :right_long => br[1].to_f }

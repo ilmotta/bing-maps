@@ -12,9 +12,8 @@ class UsersController < ApplicationController
         @categories = Category.all(:order => :name)
         params[:map] ||= { :culture => 'en-US' }
         @culture = params[:map][:culture]
-        
       end
-      format.json { render :json => @users.to_json(:only => [:id, :latitude, :longitude, :role, :category_id]) }
+      format.json { render :json => @users.to_json }
     end
   end
   

@@ -46,7 +46,7 @@
     $('#categories a').click(function() {
       // Toggle state
       $(this).data('active') ? $(this).data('active', false) : $(this).data('active', true);
-      
+
       // Disable other categories
       $('#categories a').not(this).each(function() {
         $(this).data('active', false);
