@@ -4,9 +4,8 @@
 <p>Type: <%= @user.role.zero?? 'ADVERTISER' : 'PUBLISHER' %></p>
 <p>Location: (<%= @user.latitude %>, <%= @user.longitude %>)</p>
 
-<script type='text/javascript'>
-  $(function() {
-    // Remove unwanted br tags...
-    $('.customInfoBox-body .firstChild > br').remove();
-  });
-</script>
+<p>
+  Lorem ipsum dolor sit amet, consectetur adipisicing elit,<br />
+  sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br />
+  Ut enim ad minim veniam, quis nostrud exercitation.
+</p>

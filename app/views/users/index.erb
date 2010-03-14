@@ -1,34 +1,29 @@
-<table border='0' cellspacing='5' style='width:100%;'>
-  <tr>
-    <td style='width:300px; vertical-align:top;'>
-      <% form_tag users_path, :method => :get do %>
-        <p>
-          <%= label :map, :culture, 'Culture:' %><br />
-          <%= select :map, :culture, User::CULTURES, :selected => @culture %>
-        </p>
-        
-        <%= submit_tag 'Go &raquo;' %>
-      <% end %>
-      
-      <p>
-        <%= label :map, :where, 'Search Location:' %><br />
-        <%= text_field :map, :where, :value => 'Rua Urussanga 240, Porto Alegre/RS', :size => 60 %>
-        <%= link_to 'Search', '#', :id => 'search' %>
-      </p>
-      
-      <h3>Filter by Category</h3>
-      <ul id='categories'>
-        <li><%= link_to 'All Categories', '#', 'data-category_id' => 0 %></li>
-        <% @categories.each do |category| %>
-          <li><%= link_to category.name, '#', 'data-category_id' => category.id %></li>
-        <% end %>
-      </ul>
-    </td>
-    <td>
-      <div id='map' style="position:relative; width:100%; height:400px;"></div>
-    </td>
-  </tr>
-</table>
+<div class='main-toolbar'>
+  <% form_tag users_path, :method => :get do %>
+    <p>
+      <%= label :map, :culture, 'Culture:' %><br />
+      <%= select :map, :culture, User::CULTURES, :selected => @culture %>
+    </p>
+    
+    <%= submit_tag 'Go &raquo;' %>
+  <% end %>
+  
+  <p>
+    <%= label :map, :where, 'Search Location:' %><br />
+    <%= text_field :map, :where %>
+    <%= link_to 'Search', '#', :id => 'search' %>
+  </p>
+  
+  <h3>Filter by Category</h3>
+  <ul id='categories'>
+    <li><%= link_to 'All Categories', '#', 'data-category_id' => 0 %></li>
+    <% @categories.each do |category| %>
+      <li><%= link_to category.name, '#', 'data-category_id' => category.id %></li>
+    <% end %>
+  </ul>
+</div>
+
+<div id='map' style="position:relative; width:100%; height:100%;"></div>
 
 <% content_for :script do %>
   <script type="text/javascript">
@@ -44,6 +39,8 @@
     });
     
     $('#categories a').click(function() {
+      Map.hideInfoBox();
+      
       // Toggle state
       $(this).data('active') ? $(this).data('active', false) : $(this).data('active', true);
 

@@ -1,3 +1,15 @@
+* { margin:0; padding:0; }
+html, body { height:100%; }
+ul { list-style-type:none; }
+
+
+/* ======= */
+/* = Map = */
+/* ======= */
+
+body { overflow:hidden; }
+.main-toolbar { padding:15px; width:322px; height:92.3%; position:absolute; left:12px; top:12px; z-index:1000; background:#F6F6F1; -moz-border-radius:8px; -webkit-border-radius:8px; -moz-box-shadow:1px 1px 3px #999; -webkit-box-shadow:1px 1px 3px #999; }
+
 /* Pushpins */
 .icon-a, .icon-p { width:30px; height:28px; background:url("/images/map-icons.png") no-repeat; }
 .icon-p { background-position:0 -28px; }
@@ -5,17 +17,19 @@
 /* Styles that apply to the info box's containing element whether it has no beak, a rightBeak, or a leftBeak */
 .customInfoBox-noBeak,
 .customInfoBox-with-rightBeak,
-.customInfoBox-with-leftBeak { position:absolute; }
+.customInfoBox-with-leftBeak { position:absolute; width:275px; }
 
-.customInfoBox-noBeak *,
-.customInfoBox-with-rightBeak *,
-.customInfoBox-with-leftBeak * { padding:0; margin:0; }
+.customInfoBox-with-leftBeak .customInfoBox-beak { background-image:url("/images/info-box-arrow-left.png"); left:-24px; }
+.customInfoBox-with-rightBeak .customInfoBox-beak { background-image:url("/images/info-box-arrow-right.png"); right:-14px; }
+.customInfoBox-with-leftBeak .realInfoBox-shadow { background-position:0 0; left:-5px; }
+.customInfoBox-with-rightBeak .realInfoBox-shadow { background-position:0 -60px; left:-45px; }
 
 /* Offset the body for the drop-shadow and set the body background and border just for starters (developers can change this easily) */
-.customInfoBox-body { -moz-box-shadow:5px 10px 4px rgba(0,0,0,.3); position:relative; top:-5px; left:-5px; padding:10px; border:5px solid #231F20; background-color:#F6F6F1; -moz-border-radius:5px; border-radius:5px; }
+.customInfoBox-body { padding:10px; border:5px solid #231F20; background-color:#F6F6F1; -moz-border-radius:5px; border-radius:5px; }
 
 /* Apply a nice default drop-shadow after the default Bing Maps info box styles are cleared */
-.customInfoBox-shadow { position:relative; background-color:transparent; }
+.customInfoBox-shadow { background:transparent; }
+.realInfoBox-shadow { background:url("/images/drop-shadow.png") no-repeat; position:relative; bottom:40px; width:320px; height:65px; z-index:499; }
 
 /* Sections of the info box that a developer could style if desired, but have no style when the default Bing Maps info box styles are cleared */
 .customInfoBox-previewArea,
@@ -23,7 +37,10 @@
 
 /* Sections of the info box that should not be visible when the default Bing Maps info box styles are cleared */
 .customInfoBox-actions,
-.customInfoBox-paddingHack { display:none; }
+.customInfoBox-paddingHack,
+.customInfoBox-body .firstChild > br { display:none; }
 
-.customInfoBox-beak,
+/* Beak */
+.customInfoBox-beak { background-repeat:no-repeat; width:24px; height:42px; position:absolute; visibility:inherit; z-index:1001; }
+
 .customInfoBox-progressAnimation { visibility:hidden; }

@@ -13,8 +13,14 @@ var Map = (function() {
     load: function(users) {
       map = new VEMap('map');
       map.LoadMap();
+      map.HideDashboard();
       map.ClearInfoBoxStyles();
       map.SetMapStyle(getCookieStyle() || VEMapStyle.Road);
+      
+      showMiniMapRightBottom();
+      hideMiniMapResizeIcon();
+      $(window).resize(showMiniMapRightBottom);
+      
       removeUnusedControls();
       addPushpins(users);
 
@@ -40,9 +46,29 @@ var Map = (function() {
     hideInfoBox: function() { hideInfoBox.call(); },
 
     find: function(where) {
-      map.Find(null, where, VEFindType.Businesses, null, null, null, null, null, true, true, function(layer, resultsArray, places) {
-        return places;
-      });
+      map.Find(
+        null,  // what
+        where, // where
+        VEFindType.Businesses, // findType
+        null,  // shapeLayer
+        null,  // startIndex
+        15,  // numberOfResults
+        true,  // showResults
+        null,  // createResults
+        false,  // useDefaultDisambiguation
+        true,  // setBestMapView
+        function(layer, resultsArray, places) {
+          if (places && places.length > 1) {
+            console.log('Multiple places');
+            refreshVisibleMap();
+          } else if (places && places.length == 1) {
+            console.log('One place');
+            refreshVisibleMap();
+          } else {
+            console.log('No place');
+          }
+        }
+      );
     },
     
     getShapeLayer: function() {
@@ -58,12 +84,11 @@ var Map = (function() {
   };
 
   function addPushpins(users) {
-    if (users.length == 0)
-      return;
+    if (users.length == 0) { return; }
 
     var newShapes = [];
     var shapeLayer = new VEShapeLayer();
-    $.each(users, function(i, user) { newShapes.push(createPushpin(user)); });
+    $(users).each(function(i, user) { newShapes.push(createPushpin(user)); });
     map.DeleteAllShapeLayers();
     map.AddShapeLayer(shapeLayer);
     shapeLayer.AddShape(newShapes);
@@ -74,14 +99,43 @@ var Map = (function() {
     var pin = new VEShape(VEShapeType.Pushpin, latLong);
     var klass = user.role == ADVERTISER ? 'icon-a' : 'icon-p';
     pin.SetCustomIcon('<div class="'+klass+' "' + 'data-user-id="'+user.id+'" ' + 'data-user-type="'+user.role+'" ' + 'data-user-category_id="'+user.category_id+'"></div>');
+    pin.SetMinZoomLevel(DEFAULT_ZOOM);
     return pin;
   }
-
+  
+  function showInfoBox(pin) {
+    map.ShowInfoBox(pin);
+    fixInfoBoxLayout();
+  }
+  
+  // ================
+  // = Layout Fixes =
+  // ================
   function removeUnusedControls() {
     $('#MSVE_navAction_View3DMapMode,\
        #MSVE_navAction_FlatlandMapMode,\
        #MSVE_navAction_separator0,\
        #MSVE_navAction_ObliqueMapView').remove();
+  }
+  
+  function fixInfoBoxLayout() {
+    var left = null;
+    
+    var infoBox = $('.customInfoBox-with-leftBeak');
+    if (infoBox) {
+      left = parseInt(infoBox.css('left'), 10);
+      infoBox.css({ left: left + 36 });
+    }
+    
+    infoBox = $('.customInfoBox-with-rightBeak');
+    if (infoBox) {
+      left = parseInt(infoBox.css('left'), 10);
+      infoBox.css({ left: left - 19 });
+    }
+    
+    // Insert a more flexible dropshadow.
+    if ( $('.realInfoBox-shadow').length == 0 )
+      $('.customInfoBox-shadow').after($('<div class="realInfoBox-shadow">'));
   }
 
   // ==================
@@ -117,14 +171,15 @@ var Map = (function() {
     Map.hideInfoBox();
     if (event.elementID) {
       var pin = map.GetShapeByID(event.elementID);
+      
       if (pin.GetDescription()) {
-        map.ShowInfoBox(pin);
+        showInfoBox(pin);
       } else {
         var icon = $(pin.GetCustomIcon());
         var userID = icon.attr('data-user-id');
         $.get('/users/'+userID, function(html) {
           pin.SetDescription(html);
-          map.ShowInfoBox(pin);
+          showInfoBox(pin);
         });
       }
     }
@@ -190,6 +245,25 @@ var Map = (function() {
     $.cookie('navid-map-center', null);
     $.cookie('navid-map-zoom', null);
     $.cookie('navid-map-style', null);
+  }
+  
+  // ===========
+  // = Minimap =
+  // ===========
+  function showMiniMapRightBottom() {
+    var pixelPosition = latLongToPixel(map.GetMapView().BottomRightLatLong);
+    map.ShowMiniMap(pixelPosition.x - 150, pixelPosition.y - 150);
+  }
+  
+  function hideMiniMapResizeIcon() {
+    $('#MSVE_minimap_resize').hide();
+  }
+  
+  function latLongToPixel(latLong) {
+    var pixelPoint = map.LatLongToPixel(latLong);
+    pixelPoint.x = parseInt(pixelPoint.x, 10);
+    pixelPoint.y = parseInt(pixelPoint.y, 10);
+    return pixelPoint;
   }
 })();
 
