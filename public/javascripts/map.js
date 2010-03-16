@@ -212,39 +212,39 @@ var Map = (function() {
   // = Cookies =
   // ===========
   function getLatLongFromCookie() {
-    if (!$.cookie('navid-map-center')) {
+    if (!$.cookie('bing-map-center')) {
       return null;
     }
 
-    var center = $.cookie('navid-map-center').split(',');
+    var center = $.cookie('bing-map-center').split(',');
     return new VELatLong(parseFloat(center[0]), parseFloat(center[1]));
   }
 
   function setCookieCenter() {
-    $.cookie( 'navid-map-center', [map.GetCenter().Latitude, map.GetCenter().Longitude].join(',') );
+    $.cookie( 'bing-map-center', [map.GetCenter().Latitude, map.GetCenter().Longitude].join(',') );
   }
 
   function getCookieStyle() {
-    return $.cookie('navid-map-style');
+    return $.cookie('bing-map-style');
   }
 
   function setCookieStyle() {
-    $.cookie('navid-map-style', map.GetMapStyle());
+    $.cookie('bing-map-style', map.GetMapStyle());
   }
 
   function getCookieZoom() {
-    return parseInt($.cookie('navid-map-zoom'), 10);
+    return parseInt($.cookie('bing-map-zoom'), 10);
   }
 
   function setCookieZoom(event) {
-    $.cookie('navid-map-zoom', map.GetZoomLevel());
+    $.cookie('bing-map-zoom', map.GetZoomLevel());
   }
 
   // Just a helper function for debugging purposes.
   function resetCookies() {
-    $.cookie('navid-map-center', null);
-    $.cookie('navid-map-zoom', null);
-    $.cookie('navid-map-style', null);
+    $.cookie('bing-map-center', null);
+    $.cookie('bing-map-zoom', null);
+    $.cookie('bing-map-style', null);
   }
   
   // ===========
